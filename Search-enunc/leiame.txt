@@ -1,0 +1,1 @@
+Versão do pacote de busca com algumas partes omitidas para que os estudantes programem.
