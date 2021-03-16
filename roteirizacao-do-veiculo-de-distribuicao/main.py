@@ -1,5 +1,5 @@
 from math import cos, asin, sqrt
-from random import choice
+from random import uniform
 import sys
 
 
@@ -48,12 +48,17 @@ class Route:  # Edge
         self.id = Route.next_id
         Route.next_id += 1
 
+        self.origin_id = u.id
+        self.destination_id = v.id
         self.distance = u.haversineDistanceTo(v)
-        self.u = u
-        self.v = v
+        self.weight = Route.calculateWeight()
+
+    @staticmethod
+    def calculateWeight():
+        return uniform(0.0, 1.0)
 
     def __str__(self):
-        return "Route: (%s) -> (%s) | Distance: %s km" % (self.u.id, self.v.id, self.distance)
+        return "Route: (%s) <-> (%s) | Distance: %s km | Weight: %s" % (self.origin_id, self.destination_id, self.distance, self.weight)
 
 
 class GPS:
@@ -66,6 +71,16 @@ class GPS:
         self.health_units = health_units
         self.routes = []
 
+    def addRoute(self, u, v):
+        # TODO: Test if route already exists
+        route = Route(u, v)
+        self.routes.append(route)
+
+    def calculateAllRoutes(self):
+        for i in range(0, len(self.health_units)):
+            for j in range(i + 1, len(self.health_units)):
+                self.addRoute(self.health_units[i], self.health_units[j])
+
     def __str__(self):
         out = ""
         for i in self.health_units:
@@ -76,11 +91,6 @@ class GPS:
             out += i.__str__() + "\n"
         return out
 
-    def addRoute(self, u, v):
-        # TODO: Test if route already exists
-        route = Route(u, v)
-        self.routes.append(route)
-
 
 class State:
     def __init__(self, gps):
@@ -90,36 +100,23 @@ class State:
         return str(self.gps)
 
 
-us_01 = HealthUnit("São João Del Rey", Coordinate(-25.5376104, -49.2732949))
-us_02 = HealthUnit("Waldemar Monastier", Coordinate(-25.4974949, -49.2274042))
-us_03 = HealthUnit("Bacacheri", Coordinate(-25.4007554, -49.2395827))
-us_04 = HealthUnit("Cajuru", Coordinate(-25.4521997, -49.2176676))
-us_05 = HealthUnit("São Miguel", Coordinate(-25.480256, -49.3367166))
+health_units = []
 
+f = open("health-units.txt", "r")
+lines = f.readlines()
 
-gps_01 = GPS([
-    us_01,
-    us_02,
-    us_03,
-    us_04,
-    us_05
-])
+for line in lines:
+    line_tokens = line.split(";")
 
-gps_01.addRoute(us_01, us_02)
-gps_01.addRoute(us_01, us_03)
-gps_01.addRoute(us_01, us_04)
-gps_01.addRoute(us_01, us_05)
+    name = line_tokens[0]
+    latitude = float(line_tokens[1])
+    longitude = float(line_tokens[2].replace("\n", ""))
+    health_units.append(HealthUnit(name, Coordinate(latitude, longitude)))
 
-gps_01.addRoute(us_02, us_03)
-gps_01.addRoute(us_02, us_04)
-gps_01.addRoute(us_02, us_05)
+f.close()
 
-gps_01.addRoute(us_03, us_04)
-gps_01.addRoute(us_03, us_05)
+gps = GPS(health_units)
+gps.calculateAllRoutes()
 
-gps_01.addRoute(us_04, us_05)
-
-
-initial_state = State(gps_01)
-
+initial_state = State(gps)
 print(initial_state)
