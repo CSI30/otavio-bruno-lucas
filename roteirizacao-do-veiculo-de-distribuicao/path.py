@@ -5,7 +5,7 @@ from math import cos, asin, sqrt
 class Path:
     next_id = 0
 
-    def __init__(self, health_unit_1, health_unit_2, accident_probability=uniform(0.0, 1.0), heavy_traffic_probability=uniform(0.0, 1.0)):
+    def __init__(self, health_unit_1, health_unit_2,):
         self.id = Path.next_id
         Path.next_id += 1
 
@@ -13,8 +13,8 @@ class Path:
         self.health_unit_2 = health_unit_2
         self.haversine_distance = Path.haversine_distance_between(
             health_unit_1.coordinate, health_unit_2.coordinate)
-        self.accident_probability = accident_probability
-        self.heavy_traffic_probability = heavy_traffic_probability
+        self.accident_probability = uniform(0.0, 1.0)
+        self.heavy_traffic_probability = uniform(0.0, 1.0)
 
     @staticmethod
     def haversine_distance_between(coordinate_1, coordinate_2):
