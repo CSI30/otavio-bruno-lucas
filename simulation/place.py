@@ -32,3 +32,8 @@ class Place:
 
     def __str__(self):
         return "Place: %s | %s | %s" % (self.id, self.coordinate.__str__(), self.name)
+
+
+def print_places(places):
+    for place in places:
+        print(place)

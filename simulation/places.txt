@@ -1,4 +1,4 @@
-Centro de Distribuição;-25.4367623;-49.259514
+Centro de Distribuição;-25.4358006;-49.2580013
 São João Del Rey;-25.5376104;-49.2732949
 Waldemar Monastier;-25.4974949;-49.2274042
 Bacacheri;-25.4007554;-49.2395827
