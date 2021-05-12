@@ -144,7 +144,7 @@ def selection_and_crossover(population, parents, fn_fitness, verbose=False):
 
             if verbose:
                 print(
-                    '& sc:',
+                    'sc:',
                     list(map(lambda x: x.id, sc[0])),
                     'at:',
                     point,
@@ -167,7 +167,7 @@ def selection_and_crossover(population, parents, fn_fitness, verbose=False):
 
             if verbose:
                 print(
-                    '& sc:',
+                    'sc:',
                     list(map(lambda x: x.id, sc[0])),
                     'at:',
                     point,

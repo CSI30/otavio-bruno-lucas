@@ -6,8 +6,8 @@ import fuzzy as FUZZY
 import matplotlib.pyplot as plt
 
 # GENETIC ALGORITHM PARAMETERS
-population_size = 300
-number_of_parents = 15
+population_size = 100
+number_of_parents = 10
 probability_of_mutation = 0.05
 number_of_rouds = 100
 
