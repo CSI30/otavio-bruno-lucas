@@ -3,7 +3,7 @@ from time import sleep
 from place import Place, print_places
 import genetic_algorithm as GA
 import fuzzy as FUZZY
-
+import matplotlib.pyplot as plt
 
 # GENETIC ALGORITHM PARAMETERS
 population_size = 20
@@ -68,11 +68,10 @@ route = GA.best_chromossome(
 GA.print_route(route, origin)
 
 while len(route) > 1:
-    # Fuel level did not change
-    # Total remaining distance
     total_remaining_distance = GA.hs_fitness(route, origin)
     recommendation = FUZZY.simulate(fuel_level, total_remaining_distance)
-    print('\nSYSTEM RECOMMENDATION:', recommendation)
+    fuel_level -= 10
+    print('\nROUTE CALCULATED RISK:', recommendation)
 
     print(
         '\nSELECT ONE ACTION:',
@@ -83,6 +82,8 @@ while len(route) > 1:
     )
 
     action_input = input('-> ')
+
+    plt.close("all")
 
     if action_input == '2':
         if len(route) < 3:

@@ -74,10 +74,9 @@ def simulate(fuel_level, total_remaining_distance):
     route_simulation.input['remainingDistance'] = total_remaining_distance
 
     route_simulation.compute()
-    print(route_simulation.output['routeRisk'])
 
     remainingFuel.view(sim=route_simulation)
     remainingDistance.view(sim=route_simulation)
     routeRisk.view(sim=route_simulation)
 
-    input("Press enter to exit ;)")
+    return route_simulation.output['routeRisk']

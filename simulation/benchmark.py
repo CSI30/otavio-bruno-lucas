@@ -1,52 +1,77 @@
-import matplotlib.pyplot as plt
-from matplotlib.collections import EventCollection
+import genetic_algorithm as GA
+from place import Place
+
+# import matplotlib.pyplot as plt
+# import numpy as np
+
+# # Data for plotting
+# t = np.arange(0.0, 2.0, 0.01)
+# s = 1 + np.sin(2 * np.pi * t)
+
+# fig, ax = plt.subplots()
+# ax.plot(t, s)
+
+# ax.set(xlabel='time (s)', ylabel='voltage (mV)',
+#        title='About as simple as it gets, folks')
+# ax.grid()
+
+# fig.savefig("test.png")
+# plt.show()
+
 import numpy as np
+import matplotlib.pyplot as plt
 
-# Fixing random state for reproducibility
-np.random.seed(19680801)
+x = []
+y = []
 
-# create random data
-xdata = np.random.random([2, 10])
+population_size = 100
+number_of_parents = 10
+probability_of_mutation = 0.1
+verbose = False
 
-# split the data into two parts
-xdata1 = xdata[0, :]
-xdata2 = xdata[1, :]
+origin, places = Place.from_file("places.txt")
 
-# sort the data so it makes clean curves
-xdata1.sort()
-xdata2.sort()
 
-# create some y data points
-ydata1 = xdata1 ** 2
-ydata2 = 1 - xdata2 ** 3
+for number_of_rounds in range(10, 100, 2):
+    population = GA.population(places, population_size, verbose)
 
-# plot the data
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
-ax.plot(xdata1, ydata1, color='tab:blue')
-ax.plot(xdata2, ydata2, color='tab:orange')
+    for i in range(number_of_rounds):
+        population = GA.selection_and_crossover(
+            population,
+            number_of_parents,
+            lambda x: GA.hs_fitness(x, origin),
+            verbose
+        )
+        population = GA.mutation(
+            population,
+            number_of_parents,
+            probability_of_mutation,
+            verbose
+        )
 
-# create the events marking the x data points
-xevents1 = EventCollection(xdata1, color='tab:blue', linelength=0.05)
-xevents2 = EventCollection(xdata2, color='tab:orange', linelength=0.05)
+    route = GA.best_chromossome(
+        population,
+        lambda x: GA.hs_fitness(x, origin),
+        verbose
+    )
 
-# create the events marking the y data points
-yevents1 = EventCollection(ydata1, color='tab:blue', linelength=0.05,
-                           orientation='vertical')
-yevents2 = EventCollection(ydata2, color='tab:orange', linelength=0.05,
-                           orientation='vertical')
+    x.append(number_of_rounds)
+    y.append(GA.hs_fitness(route, None))
 
-# add the events to the axis
-ax.add_collection(xevents1)
-ax.add_collection(xevents2)
-ax.add_collection(yevents1)
-ax.add_collection(yevents2)
 
-# set the limits
-ax.set_xlim([0, 1])
-ax.set_ylim([0, 1])
+# t = np.arange(0.0, 2.0, 0.01)
+# s = 1 + np.sin(2 * np.pi * t)
 
-ax.set_title('line plot with data points')
+fig, ax = plt.subplots()
+ax.plot(x, y)
 
-# display the plot
+ax.set(xlabel='time (s)', ylabel='voltage (mV)',
+       title='About as simple as it gets, folks')
+ax.grid()
+
+# fig.savefig("test.png")
 plt.show()
+
+
+# plt.scatter(x, y)
+# plt.show()
