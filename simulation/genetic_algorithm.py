@@ -131,23 +131,53 @@ def selection_and_crossover(population, parents, fn_fitness, verbose=False):
         point = randint(1, len(sp[i]) - 1)
         shuffle(sc)
         nc = list(sc[0])
-        for j in range(len(sp[i][:point])):
-            nc.remove(sp[i][:point][j])
-        sp[i][point:] = nc
 
-        if verbose:
-            print(
-                'c:',
-                list(map(lambda x: x.id, sp[i])),
-                '& sc:',
-                list(map(lambda x: x.id, sc[0])),
-                'at:',
-                point,
-                '->',
-                list(map(lambda x: x.id, sp[i][:point])),
-                ' + ',
-                list(map(lambda x: x.id, nc))
-            )
+        rand = randint(0, 1)
+
+        if rand == 0:
+            if verbose:
+                print('c:')
+                print_chromosome(sp[i])
+
+            for j in range(len(nc[:point])):
+                sp[i].remove(nc[:point][j])
+
+            if verbose:
+                print(
+                    '& sc:',
+                    list(map(lambda x: x.id, sc[0])),
+                    'at:',
+                    point,
+                    '->',
+                    list(map(lambda x: x.id, nc[:point])),
+                    ' + ',
+                    list(map(lambda x: x.id, sp[i]))
+                )
+
+            sp[i] = nc[:point] + sp[i]
+
+        else:
+
+            if verbose:
+                print('c:')
+                print_chromosome(sp[i])
+
+            for j in range(len(nc[point:])):
+                sp[i].remove(nc[point:][j])
+
+            if verbose:
+                print(
+                    '& sc:',
+                    list(map(lambda x: x.id, sc[0])),
+                    'at:',
+                    point,
+                    '->',
+                    list(map(lambda x: x.id, sp[i])),
+                    ' + ',
+                    list(map(lambda x: x.id, nc[point:]))
+                )
+
+            sp[i] = sp[i] + nc[point:]
 
     return sp
 

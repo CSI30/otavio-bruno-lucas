@@ -6,13 +6,12 @@ import fuzzy as FUZZY
 import matplotlib.pyplot as plt
 
 # GENETIC ALGORITHM PARAMETERS
-population_size = 20
-number_of_parents = 2
-probability_of_mutation = 0.5
+population_size = 300
+number_of_parents = 15
+probability_of_mutation = 0.05
 number_of_rouds = 100
 
 fuel_level = randint(50, 100)
-# consumo
 
 verbose = True
 
@@ -33,17 +32,7 @@ print(
 
 input('\n----- press ENTER to start ----- ')
 
-# 1 - Rota inicial
-# 2 - Verificar quantidade de combustível
-# 3 - Verificar distância total restante
-# 4 - Chamar unidade preditiva passando (2, 1)
-#   SE ok ENTÃO prosseguir (USUÁRIO ESCOLHE)
-#   SE remover X ENTÃO recalcular rota retirando os X últimos (USUÁRIO ESCOLHE)
-#   SE cancelar ENTÃO avisar e parar execução (USUÁRIO ESCOLHE)
-# 5 - Ir para próximo ponto (remover o primeiro ponto da rota)
-# 6 - Repetir procedimento 2 a 5 até terminar
 
-# 1:
 population = GA.population(places, population_size, verbose)
 
 for i in range(number_of_rouds):
